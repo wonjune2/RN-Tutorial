@@ -5,13 +5,15 @@ import ArrowComponent from './src/screens/ArrowComponent'
 import Person from './src/screens/Person'
 import * as D from './src/data'
 const people = D.makeArray(100).map(D.createRandomPerson);
-const person = D.createRandomPerson()
+
+
 export default function App() {
+  const children = people.map((person) => (
+    <Person key={person.id} person={person} />
+  ))
   return (
     <SafeAreaView>
-      <ClassComponent />
-      <ArrowComponent />
-      <Person person={person} />
+      <ScrollView>{children}</ScrollView>
     </SafeAreaView>
   )
 }
