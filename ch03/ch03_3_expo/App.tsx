@@ -1,20 +1,24 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
+import {useFonts} from 'expo-font'
+import React from "react";
 
 export default function App() {
+  const [loaded] = useFonts({
+    regular: require('./assets/fonts/DancingScript-Regular.ttf')
+  })
+
   return (
-    <View style={styles.container}>
-      <Text>Hello World</Text>
-      <StatusBar style="auto" />
+    <View>
+      {loaded ? (
+        <Text style={styles.font}>Hello World</Text>
+      ) : <StatusBar />}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+  font: {
+    fontFamily: 'regular', fontWeight: '400'
+  }
 });
