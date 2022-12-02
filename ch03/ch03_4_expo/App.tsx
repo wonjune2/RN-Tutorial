@@ -6,7 +6,7 @@ import BottomBar from './src/screens/BottomBar'
 import { Colors } from 'react-native-paper';
 export default function App() {
   return (
-    <SafeAreaView>
+    <SafeAreaView style={[styles.flex]}>
       <TopBar />
       <Content />
       <BottomBar />

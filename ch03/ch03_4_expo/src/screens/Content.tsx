@@ -23,8 +23,7 @@ export default function CopyMe() {
 
 const styles = StyleSheet.create({
     view: {
-        flex: 1, 
-        // height: '100%', 
+        flex: 1,
         padding: 5, 
         backgroundColor: Colors.blue900
     },
