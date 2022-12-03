@@ -1,9 +1,8 @@
 import React from "react";
-import { StyleSheet, View, Text, Image } from "react-native";
+import { StyleSheet, View, Text, Image, ScrollView } from "react-native";
 import { Colors } from "react-native-paper";
 import * as D from '../data'
 
-const title = 'Content'
 const avatars = D.makeArray(200).map((notUsed) => D.randomAvatarUrl())
 
 export default function CopyMe() {
@@ -13,19 +12,18 @@ export default function CopyMe() {
         </View>
     ))
     return (
-        <View style={[styles.view]}>
+        <ScrollView contentContainerStyle={[styles.view]}>
             {children}
-        </View>
+        </ScrollView>
     )
 }
 
 const styles = StyleSheet.create({
     view: {
         flexDirection: 'row',
-        // overflow: 'hidden',
-        flexWrap: 'nowrap',
+        flexWrap: 'wrap',
         justifyContent: 'center',
-        flex: 1,
+        // flex: 1,
         padding: 5
     },
     text: {fontSize: 20},
