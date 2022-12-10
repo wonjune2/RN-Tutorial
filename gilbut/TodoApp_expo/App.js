@@ -1,11 +1,12 @@
 import { StatusBar } from 'expo-status-bar'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { StyleSheet, KeyboardAvoidingView, Platform } from 'react-native'
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
 import AddTodo from './components/AddTodo'
 import DateHead from './components/DateHead'
 import Empty from './components/Empty'
 import TodoList from './components/TodoList'
+import todosStorage from './storages/todosStorage'
 
 export default function App() {
   const today = new Date()
@@ -15,6 +16,15 @@ export default function App() {
     { id: 2, text: '리택트 네이티브 기초 공부', done: false },
     { id: 3, text: '투두 리스트 만들어 보기', done: false },
   ])
+
+  useEffect(() => {
+    todosStorage.get().then(setTodos).catch(console.error)
+  }, [])
+
+  // save
+  useEffect(() => {
+    todosStorage.set(todos).catch(console.error)
+  }, [todos])
 
   const onInsert = (text) => {
     // 새로 등록할 항목의 id를 구합니다.
