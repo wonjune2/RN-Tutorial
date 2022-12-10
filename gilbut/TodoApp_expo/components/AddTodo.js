@@ -10,7 +10,7 @@ import {
   Keyboard,
 } from 'react-native'
 
-function AddTodo() {
+function AddTodo({ onInsert }) {
   const [text, setText] = useState('')
 
   const button = (
@@ -20,6 +20,7 @@ function AddTodo() {
   )
 
   const onPress = () => {
+    onInsert(text)
     setText('')
     Keyboard.dismiss()
   }
@@ -27,10 +28,10 @@ function AddTodo() {
   return (
     <View style={styles.block}>
       <TextInput
-        placeholder="할일을 입력하세요"
+        placeholder="할 일을 입력하세요."
         style={styles.input}
         value={text}
-        onChange={setText}
+        onChangeText={setText}
         onSubmitEditing={onPress}
         returnKeyType="done"
       />
