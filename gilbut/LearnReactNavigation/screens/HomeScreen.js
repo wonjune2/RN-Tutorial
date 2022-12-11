@@ -6,7 +6,15 @@ function HomeScreen({ navigation }) {
     <View>
       <Button
         title="Detail 열기"
-        onPress={() => navigation.navigate('Detail')}
+        onPress={() => navigation.navigate('Detail', { id: 1 })}
+      />
+      <Button
+        title="Detail 2 열기 "
+        onPress={() => navigation.navigate('Detail', { id: 2 })}
+      />
+      <Button
+        title="Detail 3 열기 "
+        onPress={() => navigation.navigate('Detail', { id: 3 })}
       />
     </View>
   )
