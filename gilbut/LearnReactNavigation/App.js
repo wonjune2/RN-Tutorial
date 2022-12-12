@@ -1,61 +1,58 @@
-import { StatusBar } from 'expo-status-bar'
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import React from 'react'
 import { NavigationContainer } from '@react-navigation/native'
-import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import HomeScreen from './screens/HomeScreen'
-import DetailScreen from './screens/DetailScreen'
-import HeaderlessScreen from './screens/HeaderlessScreen'
-const Stack = createNativeStackNavigator()
+import { createDrawerNavigator } from '@react-navigation/drawer'
+import { View, Text, Button } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
-export default function App() {
+const Drawer = createDrawerNavigator()
+
+function HomeScreen({ navigation }) {
+  return (
+    <View>
+      <Text>Home</Text>
+      <Button title="Drawer 열기" onPress={() => navigation.openDrawer()} />
+      <Button
+        title="Setting 열기"
+        onPress={() => navigation.navigate('Setting')}
+      />
+    </View>
+  )
+}
+
+function SettingScreen({ navigation }) {
+  return (
+    <View>
+      <Text>Setting</Text>
+      <Button title="뒤로가기" onPress={() => navigation.goBack()} />
+    </View>
+  )
+}
+
+function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen
+      <Drawer.Navigator
+        initialRouteName="Home"
+        drawerPosition="left"
+        backBehavior="history"
+        screenOptions={{
+          drawerActiveBackgroundColor: '#fb8c00',
+          drawerActiveTintColor: 'white',
+        }}
+      >
+        <Drawer.Screen
           name="Home"
           component={HomeScreen}
-          options={{
-            title: '홈',
-            headerStyle: {
-              backgroundColor: '#26b6f6',
-            },
-            headerTintColor: '#ffffff',
-            headerTitleStyle: {
-              fontWeight: 'bold',
-              fontSize: 20,
-            },
-          }}
+          options={{ title: '홈' }}
         />
-        <Stack.Screen
-          name="Detail"
-          component={DetailScreen}
-          options={{
-            headerBackVisible: false,
-            headerLeft: ({ onPress }) => (
-              <TouchableOpacity onPress={onPress}>
-                <Text>Left</Text>
-              </TouchableOpacity>
-            ),
-            headerTitle: ({ children }) => (
-              <View>
-                <Text>{children}</Text>
-              </View>
-            ),
-            headerRight: () => (
-              <View>
-                <Text>Right</Text>
-              </View>
-            ),
-          }}
+        <Drawer.Screen
+          name="Setting"
+          component={SettingScreen}
+          options={{ title: '설정' }}
         />
-        <Stack.Screen
-          name="Headerless"
-          component={HeaderlessScreen}
-          options={{
-            headerShown: false,
-          }}
-        />
-      </Stack.Navigator>
+      </Drawer.Navigator>
     </NavigationContainer>
   )
 }
+
+export default App
