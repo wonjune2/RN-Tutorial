@@ -8,14 +8,16 @@ const Drawer = createDrawerNavigator()
 
 function HomeScreen({ navigation }) {
   return (
-    <View>
-      <Text>Home</Text>
-      <Button title="Drawer 열기" onPress={() => navigation.openDrawer()} />
-      <Button
-        title="Setting 열기"
-        onPress={() => navigation.navigate('Setting')}
-      />
-    </View>
+    <SafeAreaView>
+      <View>
+        <Text>Home</Text>
+        <Button title="Drawer 열기" onPress={() => navigation.openDrawer()} />
+        <Button
+          title="Setting 열기"
+          onPress={() => navigation.navigate('Setting')}
+        />
+      </View>
+    </SafeAreaView>
   )
 }
 
@@ -35,15 +37,23 @@ function App() {
         initialRouteName="Home"
         drawerPosition="left"
         backBehavior="history"
+        drawerContent={({ navigation }) => (
+          <SafeAreaView>
+            <Text>A Custom Drawer</Text>
+            <Button
+              onPress={() => navigation.closeDrawer()}
+              title="Drawer 닫기"
+            />
+          </SafeAreaView>
+        )}
         screenOptions={{
-          drawerActiveBackgroundColor: '#fb8c00',
-          drawerActiveTintColor: 'white',
+          headerShown: false,
         }}
       >
         <Drawer.Screen
           name="Home"
           component={HomeScreen}
-          options={{ title: '홈' }}
+          options={{ title: '홈', headerLeft: () => <Text>Left</Text> }}
         />
         <Drawer.Screen
           name="Setting"
