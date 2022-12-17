@@ -16,7 +16,11 @@ export function LogContextProvider({ children }) {
     }
     setLogs([log, ...logs])
   }
-  return <LogContext.Provider value={{ logs }}>{children}</LogContext.Provider>
+  return (
+    <LogContext.Provider value={{ logs, onCreate }}>
+      {children}
+    </LogContext.Provider>
+  )
 }
 
 export default LogContext

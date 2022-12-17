@@ -4,7 +4,7 @@ import FloatingWriteButton from '../component/FloatingWriteButton'
 import LogContext from '../contexts/LogContext'
 
 function FeedsScreen() {
-  const { text, setText } = useContext(LogContext)
+  const { logs } = useContext(LogContext)
   return (
     <View style={styles.block}>
       <FloatingWriteButton />
