@@ -1,49 +1,63 @@
-import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import React, { useRef, useState } from 'react'
+import {
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import BorderedInput from '../components/BorderedInput'
 import CustomBottom from '../components/CustomButtom'
+import SignButtons from '../components/SignButtons'
+import SignForm from '../components/SignForm'
 
 function SignInScreen({ navigation, route }) {
   const { isSignUp } = route.params ?? {}
+  const [form, setForm] = useState({
+    email: '',
+    password: '',
+    confirmPassword: '',
+  })
+
+  const createChangeTextHandler = (name) => (value) => {
+    setForm({ ...form, [name]: value })
+  }
+
+  const onSubmit = () => {
+    Keyboard.dismiss()
+    console.log(form)
+  }
+
+  const passwordRef = useRef()
+  const confirmPasswordRef = useRef()
+
   return (
-    <SafeAreaView style={styles.fullscreen}>
-      <Text style={styles.text}>PublicGallery</Text>
-      <View style={styles.form}>
-        <BorderedInput hasMarginBottom placeholder="이메일" />
-        <BorderedInput placeholder="비밀번호" hasMarginBottom={isSignUp} />
-        {isSignUp && <BorderedInput placeholder="비밀번호 확인" />}
-        <View style={styles.buttons}>
-          {isSignUp ? (
-            <>
-              <CustomBottom title="회원가입" hasMarginBottom />
-              <CustomBottom
-                title="로그인"
-                theme="secondary"
-                onPress={() => {
-                  navigation.goBack()
-                }}
-              />
-            </>
-          ) : (
-            <>
-              <CustomBottom title="로그인" hasMarginBottom />
-              <CustomBottom
-                title="회원가입"
-                theme="secondary"
-                onPress={() => {
-                  navigation.push('SignIn', { isSignUp: true })
-                }}
-              />
-            </>
-          )}
+    <KeyboardAvoidingView
+      style={styles.KeyboardAvoidingView}
+      behavior={Platform.select({ ios: 'padding' })}
+    >
+      <SafeAreaView style={styles.fullscreen}>
+        <Text style={styles.text}>PublicGallery</Text>
+        <View style={styles.form}>
+          <SignForm
+            isSignUp={isSignUp}
+            onSubmit={onSubmit}
+            form={form}
+            createChangeTextHandler={createChangeTextHandler}
+          />
+          <SignButtons isSignUp={isSignUp} onSubmit={onSubmit} />
         </View>
-      </View>
-    </SafeAreaView>
+      </SafeAreaView>
+    </KeyboardAvoidingView>
   )
 }
 
 const styles = StyleSheet.create({
+  KeyboardAvoidingView: {
+    flex: 1,
+  },
   fullscreen: {
     flex: 1,
     alignItems: 'center',
@@ -57,9 +71,6 @@ const styles = StyleSheet.create({
     marginTop: 64,
     width: '100%',
     paddingHorizontal: 16,
-  },
-  buttons: {
-    marginTop: 64,
   },
 })
 
