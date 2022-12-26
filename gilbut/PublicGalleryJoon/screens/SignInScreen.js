@@ -12,6 +12,7 @@ import BorderedInput from '../components/BorderedInput'
 import CustomBottom from '../components/CustomButtom'
 import SignButtons from '../components/SignButtons'
 import SignForm from '../components/SignForm'
+import { signUp } from '../lib/auth'
 
 function SignInScreen({ navigation, route }) {
   const { isSignUp } = route.params ?? {}
@@ -26,6 +27,7 @@ function SignInScreen({ navigation, route }) {
   }
 
   const onSubmit = () => {
+    signUp(form.email, form.password)
     Keyboard.dismiss()
     console.log(form)
   }
