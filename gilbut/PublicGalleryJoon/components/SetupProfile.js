@@ -37,10 +37,10 @@ function SetupProfile() {
           onSubmitEditing={onSubmit}
           returnkeyType="next"
         />
-      </View>
-      <View style={styles.buttons}>
-        <CustomBottom title="다음" onPress={onSubmit} hasMarginBottom />
-        <CustomBottom title="취소" onPress={onCancel} theme="secondary" />
+        <View style={styles.buttons}>
+          <CustomBottom title="다음" onPress={onSubmit} hasMarginBottom />
+          <CustomBottom title="취소" onPress={onCancel} theme="secondary" />
+        </View>
       </View>
     </View>
   )
@@ -62,3 +62,5 @@ const styles = StyleSheet.create({
   form: { marginTop: 16, width: '100%' },
   buttons: { marginTop: 48 },
 })
+
+export default SetupProfile

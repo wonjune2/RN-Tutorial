@@ -4,8 +4,8 @@ import {
   addDoc,
   getDocs,
   setDoc,
-  doc,
   getDoc,
+  doc,
 } from 'firebase/firestore'
 
 export function createUser({ id, displayName, photoURL }) {
@@ -17,6 +17,7 @@ export function createUser({ id, displayName, photoURL }) {
 }
 
 export async function getUser(id) {
-  const querySnapshot = await getDoc(collection(db, 'users'))
-  return querySnapshot.filter((doc) => doc.id === id)
+  const docRef = doc(db, 'users', id)
+  const docSnap = await getDoc(docRef)
+  console.log(docSnap)
 }
