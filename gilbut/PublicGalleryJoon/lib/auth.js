@@ -1,19 +1,19 @@
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth'
-const auth = getAuth()
-async function register(email, password) {
-  try {
-    await createUserWithEmailAndPassword(auth, email, password)
-  } catch (error) {
-    console.error(error)
-  }
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+} from 'firebase/auth'
+import { auth } from '../configs/firebaseConfig'
+
+export function signUp({ email, password }) {
+  console.log(email, password)
+  return createUserWithEmailAndPassword(auth, email, password)
 }
 
-export async function signUp({ email, password }) {
-  try {
-    await createUserWithEmailAndPassword(auth, email, password)
-  } catch (error) {
-    console.error(error)
-  }
+export function signIn({ email, password }) {
+  return signInWithEmailAndPassword(auth, email, password)
 }
 
-export default register
+export function SignOut({ email, password }) {
+  return signOut(auth)
+}
