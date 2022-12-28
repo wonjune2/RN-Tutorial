@@ -6,10 +6,12 @@ import {
   setDoc,
   getDoc,
   doc,
+  query,
+  where,
 } from 'firebase/firestore'
 
 export function createUser({ id, displayName, photoURL }) {
-  return addDoc(collection(db, 'users'), {
+  return setDoc(doc(db, 'users', id), {
     id,
     displayName,
     photoURL,
@@ -19,5 +21,10 @@ export function createUser({ id, displayName, photoURL }) {
 export async function getUser(id) {
   const docRef = doc(db, 'users', id)
   const docSnap = await getDoc(docRef)
-  console.log(docSnap)
+
+  if (docSnap.exists()) {
+    return docSnap.data()
+  } else {
+    return {}
+  }
 }

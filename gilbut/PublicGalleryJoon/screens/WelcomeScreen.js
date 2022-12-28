@@ -3,7 +3,7 @@ import { KeyboardAvoidingView, Platform, StyleSheet, Text } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import SetupProfile from '../components/SetupProfile'
 
-function WelcomeSceen() {
+function WelcomeScreen() {
   return (
     <KeyboardAvoidingView
       style={styles.KeyboardAvoidingView}
@@ -37,4 +37,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default WelcomeSceen
+export default WelcomeScreen
