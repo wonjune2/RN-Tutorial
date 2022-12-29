@@ -1,6 +1,13 @@
 import { useNavigation, useRoute } from '@react-navigation/native'
 import React, { useState } from 'react'
-import { Platform, Pressable, StyleSheet, View } from 'react-native'
+import {
+  ActivityIndicator,
+  Image,
+  Platform,
+  Pressable,
+  StyleSheet,
+  View,
+} from 'react-native'
 import { SignOut } from '../lib/auth'
 import { createUser } from '../lib/users'
 import BorderedInput from './BorderedInput'
@@ -11,22 +18,37 @@ import {
   MediaTypeOptions,
   useMediaLibraryPermissions,
 } from 'expo-image-picker'
+import { downloadURL, uploadImage } from '../lib/upload'
 
 function SetupProfile() {
   const [displayName, setDisplayName] = useState('')
   const navigation = useNavigation()
   const { setUser } = useUserContext()
+  const [response, setRespone] = useState(null)
+  const [loading, setLoading] = useState(false)
 
   const { params } = useRoute()
   const { uid } = params || {}
 
   const [imagePermission, setImagePermission] = useMediaLibraryPermissions()
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
+    setLoading(true)
+
+    let photoURL = null
+    let donwloadURL = null
+
+    if (response) {
+      const imageUri = response.assets[0].uri
+      console.log(imageUri)
+      photoURL = await uploadImage(uid, imageUri)
+    }
+    photoURL = await downloadURL(photoURL)
+
     const user = {
       id: uid,
       displayName,
-      photoURL: null,
+      photoURL,
     }
     createUser(user)
     setUser(user)
@@ -50,13 +72,24 @@ function SetupProfile() {
       aspect: [4, 3],
       quality: 1,
     })
-
-    console.log(result)
+    if (result.canceled) {
+      return
+    }
+    setRespone(result)
   }
 
   return (
     <View style={styles.block}>
-      <Pressable style={styles.circle} onPress={onSelectImage} />
+      <Pressable onPress={onSelectImage}>
+        <Image
+          style={styles.circle}
+          source={
+            response
+              ? { uri: response?.assets[0]?.uri }
+              : require('../assets/user.png')
+          }
+        />
+      </Pressable>
       <View style={styles.form}>
         <BorderedInput
           placeholder="닉네임"
@@ -65,10 +98,14 @@ function SetupProfile() {
           onSubmitEditing={onSubmit}
           returnkeyType="next"
         />
-        <View style={styles.buttons}>
-          <CustomBottom title="다음" onPress={onSubmit} hasMarginBottom />
-          <CustomBottom title="취소" onPress={onCancel} theme="secondary" />
-        </View>
+        {loading ? (
+          <ActivityIndicator size={32} color="#6200ee" style={styles.spinner} />
+        ) : (
+          <View style={styles.buttons}>
+            <CustomBottom title="다음" onPress={onSubmit} hasMarginBottom />
+            <CustomBottom title="취소" onPress={onCancel} theme="secondary" />
+          </View>
+        )}
       </View>
     </View>
   )
@@ -89,6 +126,10 @@ const styles = StyleSheet.create({
   },
   form: { marginTop: 16, width: '100%' },
   buttons: { marginTop: 48 },
+  spinner: {
+    marginTop: 48,
+    height: 104,
+  },
 })
 
 export default SetupProfile
