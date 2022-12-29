@@ -25,6 +25,6 @@ export async function getUser(id) {
   if (docSnap.exists()) {
     return docSnap.data()
   } else {
-    return {}
+    return
   }
 }

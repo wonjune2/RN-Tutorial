@@ -1,11 +1,16 @@
 import { useNavigation, useRoute } from '@react-navigation/native'
 import React, { useState } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { Platform, Pressable, StyleSheet, View } from 'react-native'
 import { SignOut } from '../lib/auth'
 import { createUser } from '../lib/users'
 import BorderedInput from './BorderedInput'
 import CustomBottom from './CustomButtom'
 import { useUserContext } from '../contexts/UserContext'
+import {
+  launchImageLibraryAsync,
+  MediaTypeOptions,
+  useMediaLibraryPermissions,
+} from 'expo-image-picker'
 
 function SetupProfile() {
   const [displayName, setDisplayName] = useState('')
@@ -14,6 +19,8 @@ function SetupProfile() {
 
   const { params } = useRoute()
   const { uid } = params || {}
+
+  const [imagePermission, setImagePermission] = useMediaLibraryPermissions()
 
   const onSubmit = () => {
     const user = {
@@ -30,9 +37,26 @@ function SetupProfile() {
     navigation.goBack()
   }
 
+  const onSelectImage = async () => {
+    if (!imagePermission?.granted) {
+      const permission = await setImagePermission()
+      if (!permission.granted) {
+        return
+      }
+    }
+    let result = await launchImageLibraryAsync({
+      mediaTypes: MediaTypeOptions.Images,
+      allowsEditing: false,
+      aspect: [4, 3],
+      quality: 1,
+    })
+
+    console.log(result)
+  }
+
   return (
     <View style={styles.block}>
-      <View style={styles.circle} />
+      <Pressable style={styles.circle} onPress={onSelectImage} />
       <View style={styles.form}>
         <BorderedInput
           placeholder="닉네임"
