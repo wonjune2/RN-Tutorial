@@ -1,19 +1,19 @@
 import React from 'react'
 import { Image, StyleSheet, Text, View } from 'react-native'
 import { useUserContext } from '../contexts/UserContext'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+
+const Tab = createBottomTabNavigator()
 
 function MainTab() {
-  const { user } = useUserContext()
   return (
-    <View style={styles.block}>
-      {user.photoURL && (
-        <Image
-          source={{ uri: user.photoURL }}
-          style={{ width: 128, height: 128, marginBottom: 16 }}
-        />
-      )}
-      <Text style={styles.text}>Hello, {user.displayName}</Text>
-    </View>
+    <Tab.Navigator
+      screenOptions={{
+        headerShown: false,
+        tabBarShowLabel: false,
+        tabBarActiveTintColor: '#6200ee',
+      }}
+    ></Tab.Navigator>
   )
 }
 
