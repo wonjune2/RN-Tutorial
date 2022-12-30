@@ -1,14 +1,5 @@
 import { db } from '../configs/firebaseConfig'
-import {
-  collection,
-  addDoc,
-  getDocs,
-  setDoc,
-  getDoc,
-  doc,
-  query,
-  where,
-} from 'firebase/firestore'
+import { setDoc, getDoc, doc } from 'firebase/firestore'
 
 export function createUser({ id, displayName, photoURL }) {
   return setDoc(doc(db, 'users', id), {

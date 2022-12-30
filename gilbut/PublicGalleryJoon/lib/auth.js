@@ -2,6 +2,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
+  onAuthStateChanged,
 } from 'firebase/auth'
 import { auth } from '../configs/firebaseConfig'
 
@@ -16,4 +17,8 @@ export function signIn({ email, password }) {
 
 export function SignOut({ email, password }) {
   return signOut(auth)
+}
+
+export function subscribeAuth(callback) {
+  return onAuthStateChanged(auth, callback)
 }
