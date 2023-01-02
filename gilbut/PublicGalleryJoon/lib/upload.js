@@ -5,12 +5,11 @@ const imageMeta = {
   contentType: 'image/jpeg',
 }
 
-export async function uploadImage(uid, uri) {
+export async function uploadImage(reference, uri) {
   try {
     const response = await fetch(uri)
     const blob = await response.blob()
-    const ext = uri.split('.').pop()
-    const fileuri = `profile/${uid}.${ext}`
+    const fileuri = reference
     const storageRef = ref(storage, fileuri)
     await uploadBytes(storageRef, blob, imageMeta)
     return fileuri

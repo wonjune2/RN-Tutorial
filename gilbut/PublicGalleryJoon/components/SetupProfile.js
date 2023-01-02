@@ -36,12 +36,12 @@ function SetupProfile() {
     setLoading(true)
 
     let photoURL = null
-    let donwloadURL = null
 
     if (response) {
       const imageUri = response.assets[0].uri
-      console.log(imageUri)
-      photoURL = await uploadImage(uid, imageUri)
+      const ext = imageUri.split('.').pop()
+      const ref = `profile/${uid}.${ext}`
+      photoURL = await uploadImage(ref, imageUri)
     }
     photoURL = await downloadURL(photoURL)
 
