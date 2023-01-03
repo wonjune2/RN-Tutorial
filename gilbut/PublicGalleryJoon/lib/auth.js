@@ -14,7 +14,7 @@ export function signUp({ email, password }) {
 export function signIn({ email, password }) {
   return signInWithEmailAndPassword(auth, email, password)
 }
-
+// 로그 아웃
 export function SignOut({ email, password }) {
   return signOut(auth)
 }
