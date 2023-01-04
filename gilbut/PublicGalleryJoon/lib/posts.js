@@ -1,11 +1,14 @@
 import {
   collection,
   doc,
+  getDoc,
   getDocs,
   limit,
   orderBy,
   serverTimestamp,
   setDoc,
+  startAfter,
+  where,
 } from 'firebase/firestore'
 import { db } from '../configs/firebaseConfig'
 
@@ -29,6 +32,23 @@ export async function getPosts() {
     limit(PAGE_SIZE)
   )
   const posts = querySnapshot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  }))
+
+  return posts
+}
+
+export async function getOlderPosts(id) {
+  const cursorDoc = await getDoc(doc(db, 'posts', id))
+  const snapshot = await getDocs(
+    collection(db, 'posts'),
+    orderBy('createAt', 'desc'),
+    limit(PAGE_SIZE),
+    startAfter(cursorDoc)
+  )
+
+  const posts = snapshot.docs.map((doc) => ({
     id: doc.id,
     ...doc.data(),
   }))
