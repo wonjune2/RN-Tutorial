@@ -27,13 +27,14 @@ export function createPost({ user, photoURL, description }) {
 
 export const PAGE_SIZE = 3
 
-export async function getPosts() {
-  const first = query(
+export async function getPosts(userId) {
+  const q = query(
     collection(db, 'posts'),
     orderBy('createAt', 'desc'),
-    limit(PAGE_SIZE)
+    limit(PAGE_SIZE),
+    userId && where('user.id', '==', userId)
   )
-  const querySnapshot = await getDocs(first)
+  const querySnapshot = await getDocs(q)
   const posts = querySnapshot.docs.map((doc) => ({
     id: doc.id,
     ...doc.data(),
@@ -41,18 +42,18 @@ export async function getPosts() {
   return posts
 }
 
-export async function getOlderPosts(id) {
+export async function getOlderPosts(id, userId) {
   const docRef = doc(db, 'posts', id)
   const cursorDoc = await getDoc(docRef)
-  console.log(cursorDoc.exists())
   if (cursorDoc.exists()) {
-    const first = query(
+    const q = query(
       collection(db, 'posts'),
       orderBy('createAt', 'desc'),
       startAfter(cursorDoc),
-      limit(PAGE_SIZE)
+      limit(PAGE_SIZE),
+      userId && where('user.id', '==', userId)
     )
-    const snapshot = await getDocs(first)
+    const snapshot = await getDocs(q)
     const posts = snapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
@@ -62,17 +63,18 @@ export async function getOlderPosts(id) {
   return []
 }
 
-export async function getNewerPosts(id) {
+export async function getNewerPosts(id, userId) {
   const docRef = doc(db, 'posts', id)
   const cursorDoc = await getDoc(docRef)
   if (cursorDoc.exists()) {
-    const first = query(
+    const q = query(
       collection(db, 'posts'),
       orderBy('createAt', 'desc'),
       endBefore(cursorDoc),
-      limit(PAGE_SIZE)
+      limit(PAGE_SIZE),
+      userId && where('user.id', '==', userId)
     )
-    const snapshot = await getDocs(first)
+    const snapshot = await getDocs(q)
 
     const posts = snapshot.docs.map((doc) => ({
       id: doc.id,
